@@ -1,4 +1,4 @@
-import MainApp from "./components/MainPage";
+import MainApp from "./components/MainPage.jsx";
 
 export default function App() {
   return (

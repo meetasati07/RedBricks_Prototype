@@ -1,8 +1,8 @@
 import { useState } from "react";
-import RequestBuyer from "./requestBuyer";
-import AddCrop from "./addCrop";
-import MoreOptions from "./MoreOptions";
-import FarmerNotifications from "./FarmerNotifications";
+import RequestBuyer from "./requestBuyer.jsx";
+import AddCrop from "./addCrop.jsx";
+import MoreOptions from "./MoreOptions.jsx";
+import FarmerNotifications from "./FarmerNotifications.jsx";
 
 export default function MainApp() {
     const [currentPage, setCurrentPage] = useState('');
