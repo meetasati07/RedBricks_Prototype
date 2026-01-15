@@ -1,6 +1,6 @@
 import { useState } from "react";
-import RequestBuyer from "./requestBuyer.jsx";
-import AddCrop from "./addCrop.jsx";
+import RequestBuyer from "./RequestBuyer.jsx";
+import AddCrop from "./AddCrop.jsx";
 import MoreOptions from "./MoreOptions.jsx";
 import FarmerNotifications from "./FarmerNotifications.jsx";
 
