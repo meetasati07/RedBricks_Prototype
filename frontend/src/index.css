@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@layer components {
+  .btn {
+    @apply text-xl p-4 rounded-2xl bg-amber-200 hover:bg-amber-300 transition-colors;
+  }
+  
+  .btn-primary {
+    @apply flex flex-col items-center justify-center gap-2 p-4 sm:p-6 bg-white text-green-700 font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 min-h-28 sm:min-h-32;
+  }
+  
+  .btn-secondary {
+    @apply flex flex-col items-center justify-center gap-2 p-4 sm:p-6 bg-green-100 text-green-700 font-bold rounded-xl shadow-md hover:shadow-lg hover:scale-105 active:scale-95 hover:bg-green-200 transition-all duration-200 min-h-28 sm:min-h-32;
+  }
+
+  /* Ensure good touch target sizes on mobile */
+  @media (max-width: 640px) {
+    button, select, input {
+      min-height: 2.75rem; /* 44px recommended minimum for touch */
+    }
+  }
+}
