@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: farmdirect-frontend
+    env: static
+    staticPublishPath: dist
+    buildCommand: npm install && npm run build
+    startCommand: echo "Static site - no start command needed"
+    routes:
+      - type: redirect
+        source: /*
+        destination: /index.html
