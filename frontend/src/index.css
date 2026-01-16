@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { 
+  margin: 0; 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
 @layer components {
   .btn {
@@ -13,10 +21,17 @@
     @apply flex flex-col items-center justify-center gap-2 p-4 sm:p-6 bg-green-100 text-green-700 font-bold rounded-xl shadow-md hover:shadow-lg hover:scale-105 active:scale-95 hover:bg-green-200 transition-all duration-200 min-h-28 sm:min-h-32;
   }
 
-  /* Ensure good touch target sizes on mobile */
   @media (max-width: 640px) {
     button, select, input {
-      min-height: 2.75rem; /* 44px recommended minimum for touch */
+      min-height: 2.75rem;
     }
   }
 }
+
+.input {
+  @apply w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
+}
+.btn-primary {
+  @apply bg-green-500 text-white font-bold hover:bg-green-600 transition-all shadow-md;
+}
+

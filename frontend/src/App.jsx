@@ -1,8 +1,36 @@
-import MainApp from "./components/MainPage.jsx";
+import { useState } from 'react';
+import Home from './pages/Home';
+import AddCrop from './pages/AddCrop';
+import Results from './pages/Results';
+import Buyers from './pages/Buyers';
+import Machines from './pages/Machines';
+import { buyers } from './data/buyers';
 
-export default function App() {
+function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [formData, setFormData] = useState(null);
+
+  const goTo = (page, data = null) => {
+    if (data) setFormData(data);
+    setCurrentPage(page);
+  };
+
+  const renderPage = () => {
+    switch(currentPage) {
+      case 'home': return <Home goTo={goTo} />;
+      case 'add': return <AddCrop goTo={goTo} />;
+      case 'results': return <Results goTo={goTo} data={formData} />;
+      case 'buyers': return <Buyers goTo={goTo} data={formData} />;
+      case 'machines': return <Machines goTo={goTo} data={formData} />;
+      default: return <Home goTo={goTo} />;
+    }
+  };
+
   return (
-    <MainApp />
-  )
-
+    <div className="App font-sans">
+      {renderPage()}
+    </div>
+  );
 }
+
+export default App;

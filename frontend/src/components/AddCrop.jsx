@@ -1,101 +1,101 @@
 import { useState } from "react";
 
 export default function AddCrop({ onBack }) {
-    const [cropType, setCropType] = useState('');
-    const [quantity, setQuantity] = useState('');
-    const [price, setPrice] = useState('');
-    const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+  const [form, setForm] = useState({
+    cropType: "",
+    quantity: "",
+    price: "",
+    location: "West India",
+    residueType: "",
+    transportAvailable: "",
+    machineAvailable: ""
+  });
 
-    function handleOnClick() {
-        if (!cropType || !quantity || !price) {
-            setMessage("Please fill all fields");
-            setIsSuccess(false);
-            setTimeout(() => setMessage(''), 3000);
-            return;
-        }
-        
-        setMessage("✓ Crop added successfully!");
-        setIsSuccess(true);
-        setTimeout(() => {
-            setCropType('');
-            setQuantity('');
-            setPrice('');
-            setMessage('');
-        }, 2000);
+  const [recommendation, setRecommendation] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = () => {
+    const {
+      cropType,
+      quantity,
+      price,
+      residueType,
+      transportAvailable,
+      machineAvailable
+    } = form;
+
+    if (!cropType || !quantity || !price || !residueType) {
+      setMessage("Please fill all required fields");
+      return;
     }
-    
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-green-500 to-green-700 p-3 sm:p-6 flex flex-col">
-            <div className="w-full max-w-sm sm:max-w-md mx-auto flex flex-col flex-1">
-                <button 
-                    onClick={onBack}
-                    className="mb-4 sm:mb-6 text-white hover:text-green-100 active:text-green-200 flex items-center gap-2 text-base sm:text-lg font-medium py-2"
-                >
-                    ← Back
-                </button>
-                
-                <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col flex-1">
-                    <div className="bg-gradient-to-r from-green-600 to-green-700 p-4 sm:p-6">
-                        <h1 className="text-2xl sm:text-3xl font-bold text-white">🌾 Add Crop</h1>
-                    </div>
-                    
-                    <div className="p-4 sm:p-8 space-y-4 sm:space-y-6 flex-1 flex flex-col">
-                        <div>
-                            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">Crop Type</label>
-                            <select 
-                                value={cropType}
-                                onChange={(e) => setCropType(e.target.value)}
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border-2 border-gray-300 focus:border-green-500 focus:outline-none text-base sm:text-lg bg-white"
-                            >
-                                <option value="">Select a crop</option>
-                                <option value="wheat">Wheat</option>
-                                <option value="rice">Rice</option>
-                                <option value="corn">Corn</option>
-                                <option value="cotton">Cotton</option>
-                                <option value="potato">Potato</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">Quantity (kg)</label>
-                            <input 
-                                type="number" 
-                                value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
-                                placeholder="Enter quantity"
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border-2 border-gray-300 focus:border-green-500 focus:outline-none text-base sm:text-lg"
-                            />
-                        </div>
-                        
-                        <div>
-                            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">Price (Rs/kg)</label>
-                            <input 
-                                type="number" 
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                                placeholder="Enter price"
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border-2 border-gray-300 focus:border-green-500 focus:outline-none text-base sm:text-lg"
-                            />
-                        </div>
-                        
-                        {message && (
-                            <div className={`p-3 sm:p-4 rounded-lg text-center font-semibold text-sm sm:text-base ${
-                                isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                            }`}>
-                                {message}
-                            </div>
-                        )}
-                        
-                        <button 
-                            onClick={handleOnClick}
-                            className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-bold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg hover:from-green-700 hover:to-green-800 active:from-green-800 active:to-green-900 transition-all duration-200 text-base sm:text-lg mt-auto min-h-12 sm:min-h-14"
-                        >
-                            Add Crop
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+
+    // Simple rule-based recommendation (judge-friendly)
+    if (transportAvailable === "no" && machineAvailable === "no") {
+      setRecommendation({
+        title: "🌱 Mulching Recommended",
+        reason: "No transport or machine available. Weather is suitable for in-field mulching."
+      });
+    } else {
+      setRecommendation({
+        title: "💰 Selling Recommended",
+        reason: "Logistics available. Buyers nearby can pick up residue."
+      });
+    }
+
+    setMessage("✓ Crop details saved");
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-500 to-green-700 p-4">
+      <button onClick={onBack} className="text-white mb-4">← Back</button>
+
+      <div className="bg-white rounded-xl p-6 space-y-4">
+        <h2 className="text-2xl font-bold">🌾 Add Crop Details</h2>
+
+        <select name="cropType" onChange={handleChange} className="input">
+          <option value="">Select Crop</option>
+          <option value="rice">Rice</option>
+          <option value="wheat">Wheat</option>
+        </select>
+
+        <input name="quantity" type="number" placeholder="Quantity (kg)" onChange={handleChange} className="input" />
+        <input name="price" type="number" placeholder="Expected Price (Rs/kg)" onChange={handleChange} className="input" />
+
+        <select name="residueType" onChange={handleChange} className="input">
+          <option value="">Residue Type</option>
+          <option value="loose">Loose</option>
+          <option value="baled">Baled</option>
+        </select>
+
+        <select name="transportAvailable" onChange={handleChange} className="input">
+          <option value="">Transport Available?</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <select name="machineAvailable" onChange={handleChange} className="input">
+          <option value="">Machine Available?</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        {recommendation && (
+          <div className="bg-green-50 border border-green-300 p-3 rounded">
+            <h4 className="font-bold">{recommendation.title}</h4>
+            <p className="text-sm">{recommendation.reason}</p>
+          </div>
+        )}
+
+        {message && <p className="text-green-700 font-semibold">{message}</p>}
+
+        <button onClick={handleSubmit} className="btn-primary w-full">
+          Save Crop
+        </button>
+      </div>
+    </div>
+  );
 }
