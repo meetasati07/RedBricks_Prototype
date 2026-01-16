@@ -8,13 +8,13 @@ export default function Home({ goTo }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setWeather({ temp: 27 + Math.floor(Math.random() * 4), rainProb: 20 + Math.floor(Math.random() * 20) });
-    }, 10000); 
+    }, 10000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
     const mockAlerts = [
-      { id: 1, type: "buyer", message: "GreenBio accepted your request @ ₹22/kg", time: "2 min ago" },
+      { id: 1, type: "buyer", message: "GreenBio accepted your residue selling request @ ₹22/kg", time: "2 min ago" },
       { id: 2, type: "machine", message: "Mulcher request approved for tomorrow", time: "5 min ago" },
       { id: 3, type: "cluster", message: "Ram Singh cluster: 1 spot left!", time: "10 min ago" }
     ];
@@ -24,10 +24,11 @@ export default function Home({ goTo }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-500 to-green-700 p-6 relative">
       <div className="max-w-md mx-auto text-center">
+        {/* Notification Bell - SAME POSITION + CLICKABLE */}
         <div className="absolute top-6 right-6">
           <button 
             onClick={() => setShowNotifs(!showNotifs)}
-            className="w-12 h-12 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center text-white text-xl shadow-lg hover:bg-white/30 transition-all"
+            className="w-12 h-12 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center text-white text-xl shadow-lg hover:bg-white/30 transition-all relative z-50"
           >
             🔔
             {notifications.length > 0 && (
@@ -38,6 +39,7 @@ export default function Home({ goTo }) {
           </button>
         </div>
 
+        {/* Notification Dropdown - SAME */}
         {showNotifs && (
           <div className="absolute top-20 right-6 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 max-h-96 overflow-y-auto z-20">
             <div className="p-4 border-b border-gray-100">
@@ -76,25 +78,29 @@ export default function Home({ goTo }) {
           </div>
         </div>
 
-        <button 
-          onClick={() => goTo('add')} 
-          className="w-full bg-white text-green-700 py-4 px-6 rounded-2xl font-bold text-xl mb-6 shadow-2xl hover:scale-[1.02] transition-all border-2 border-white/30"
-        >
-          🚀 Get My Options Now
+        <button onClick={() => goTo('add')} className="w-full bg-white text-green-700 py-4 px-6 rounded-2xl font-bold text-xl mb-8 shadow-2xl hover:scale-[1.02] transition-all border-2 border-white/30">
+          🚀 Enter Details
         </button>
 
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <button className="bg-white/90 p-3 rounded-xl shadow-lg hover:shadow-xl transition-all text-left">
-            <div className="text-xl mb-1">📱</div>
-            <div className="font-bold text-green-800 text-sm">Hotline</div>
-            <div className="text-xs text-gray-700">1800-RESIDUE</div>
-          </button>
-          <button className="bg-white/90 p-3 rounded-xl shadow-lg hover:shadow-xl transition-all text-left">
-            <div className="text-xl mb-1">📊</div>
-            <div className="font-bold text-green-800 text-sm">My Bookings</div>
-            <div className="text-xs text-gray-700">2 active</div>
-          </button>
-        </div>
+        {/* ✅ ORIGINAL SIZES + CALL-TO-ACTION TEXTS */}
+<div className="grid grid-cols-2 gap-3 mb-6">
+  <button className="bg-white/90 p-3 rounded-xl shadow-lg hover:shadow-xl transition-all text-left">
+    <div className="text-xl mb-1">📱</div>
+    <div className="font-bold text-green-800 text-sm">Helpline</div>
+    <div className="text-xs text-gray-700">1800-RESIDUE</div>
+    <div className="text-xs text-green-600 font-bold">Call Now →</div>  {/* ✅ ADDED BACK */}
+  </button>
+  
+  <button 
+    onClick={() => goTo('alternatives')} 
+    className="bg-white/90 p-3 rounded-xl shadow-lg hover:shadow-xl transition-all text-left"
+  >
+    <div className="text-xl mb-1">🌱</div>
+    <div className="font-bold text-green-800 text-sm">Safe Alternatives</div>
+    <div className="text-xs text-gray-700">5 ways without selling</div>
+    <div className="text-xs text-green-600 font-bold">Learn more →</div>  {/* ✅ ADDED BACK */}
+  </button>
+</div>
 
         <p className="text-white/70 text-xs mb-4">Gaining trust of farmers</p>
       </div>
