@@ -2,8 +2,31 @@ import { useState } from "react";
 import { buyers } from "../data/buyers";
 
 export default function Buyers({ goTo, data }) {
-  const handleContact = (buyer) => {
-    alert(`Contacting ${buyer.name}!\n💰 ₹${buyer.price}/kg | 📏 ${buyer.distance}\n🚚 ${buyer.transport} | 🚜 ${buyer.machine}`);
+  const [bookedBuyers, setBookedBuyers] = useState(
+    JSON.parse(localStorage.getItem("buyerBookings") || "[]")
+  );
+
+  const handleBooking = (buyer) => {
+    const booking = {
+      id: `${buyer.id}-${Date.now()}`,
+      name: buyer.name,
+      price: buyer.price,
+      distance: buyer.distance,
+      transport: buyer.transport,
+      machine: buyer.machine,
+      rating: buyer.rating,
+      bookedDate: new Date().toLocaleDateString("en-IN"),
+    };
+
+    const updatedBookings = [...bookedBuyers, booking];
+    setBookedBuyers(updatedBookings);
+    localStorage.setItem("buyerBookings", JSON.stringify(updatedBookings));
+    
+    alert(`✅ Booked ${buyer.name}!\n\nYour booking has been saved. Check "My Bookings" to manage it.`);
+  };
+
+  const isBooked = (buyerId) => {
+    return bookedBuyers.some((b) => b.name === buyers.find((buyer) => buyer.id === buyerId)?.name);
   };
 
   return (
@@ -35,10 +58,15 @@ export default function Buyers({ goTo, data }) {
                 </div>
                 
                 <button 
-                  onClick={() => handleContact(buyer)}
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg hover:from-green-600"
+                  onClick={() => handleBooking(buyer)}
+                  disabled={isBooked(buyer.id)}
+                  className={`w-full py-4 px-6 rounded-xl font-bold text-lg shadow-lg transition-all ${
+                    isBooked(buyer.id)
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600"
+                  }`}
                 >
-                  📱 Contact {buyer.name}
+                  {isBooked(buyer.id) ? "✓ Already Booked" : "📱 Book Now"}
                 </button>
               </div>
             ))}
