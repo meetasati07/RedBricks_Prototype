@@ -22,7 +22,7 @@ export default function Home({ goTo }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-500 to-green-700 p-6 relative">
+    <div className="min-h-screen bg-linear-to-b from-green-500 to-green-700 p-6 relative">
       <div className="max-w-md mx-auto text-center">
         {/* Notification Bell - SAME POSITION + CLICKABLE */}
         <div className="absolute top-6 right-6">
@@ -49,7 +49,7 @@ export default function Home({ goTo }) {
               {notifications.map(notif => (
                 <div key={notif.id} className="p-4 hover:bg-gray-50">
                   <div className="flex items-start space-x-3">
-                    <div className={`w-3 h-3 rounded-full mt-1 flex-shrink-0 ${
+                    <div className={`w-3 h-3 rounded-full mt-1 shrink-0 ${
                       notif.type === 'buyer' ? 'bg-green-500' : 
                       notif.type === 'machine' ? 'bg-blue-500' : 'bg-purple-500'
                     }`}></div>
@@ -101,6 +101,16 @@ export default function Home({ goTo }) {
     <div className="text-xs text-green-600 font-bold">Learn more →</div>  {/* ✅ ADDED BACK */}
   </button>
 </div>
+
+        <button 
+          onClick={() => goTo('bookings')} 
+          className="w-full bg-white/90 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all mb-6 text-left border-2 border-yellow-400"
+        >
+          <div className="text-2xl mb-2">📋</div>
+          <div className="font-bold text-green-800 text-lg">My Bookings</div>
+          <div className="text-xs text-gray-700">View & manage your bookings</div>
+          <div className="text-xs text-green-600 font-bold">View bookings →</div>
+        </button>
 
         <p className="text-white/70 text-xs mb-4">Gaining trust of farmers</p>
       </div>

@@ -1,10 +1,38 @@
+import { useState } from "react";
 import { machines } from "../data/buyers";
 
 export default function Machines({ goTo, data }) {
+  const [bookedMachines, setBookedMachines] = useState(
+    JSON.parse(localStorage.getItem("machineBookings") || "[]")
+  );
+
   const safeDays = data?.safeDays || 5;
   const safeUntilDate = data?.harvestDate 
     ? new Date(new Date(data.harvestDate).getTime() + safeDays * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN')
     : null;
+
+  const handleBookMachine = (machine) => {
+    const booking = {
+      id: `${machine.name}-${Date.now()}`,
+      name: machine.name,
+      cost: machine.cost,
+      status: machine.status,
+      available: machine.available,
+      crop: data?.crop || "your crop",
+      safeUntil: safeUntilDate || `${safeDays}d`,
+      bookedDate: new Date().toLocaleDateString("en-IN"),
+    };
+
+    const updatedBookings = [...bookedMachines, booking];
+    setBookedMachines(updatedBookings);
+    localStorage.setItem("machineBookings", JSON.stringify(updatedBookings));
+    
+    alert(`✅ Booked ${machine.name}!\n\nYour booking has been saved. Check "My Bookings" to manage it.`);
+  };
+
+  const isMachineBooked = (machineName) => {
+    return bookedMachines.some((b) => b.name === machineName);
+  };
 
   return (
     <div className="min-h-screen bg-green-600 p-4 pb-20">
@@ -23,7 +51,7 @@ export default function Machines({ goTo, data }) {
         </div>
 
         <div className="bg-white rounded-xl p-4 shadow-xl space-y-3">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-lg text-center">
+          <div className="bg-linear-to-r from-blue-500 to-blue-600 text-white p-3 rounded-lg text-center">
             <div className="text-xl font-bold">3 Machines</div>
             <div className="text-xs">Subsidized rates</div>
           </div>
@@ -68,13 +96,20 @@ export default function Machines({ goTo, data }) {
 
                 <button 
                   className={`w-full py-2.5 px-4 rounded-lg font-bold text-sm shadow-md transition-all ${
-                    machine.status === 'available'
-                      ? 'bg-blue-500 text-white hover:bg-blue-600 hover:shadow-lg'
-                      : 'bg-gray-400 text-white cursor-not-allowed'
+                    isMachineBooked(machine.name)
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : machine.status === "available"
+                      ? "bg-blue-500 text-white hover:bg-blue-600 hover:shadow-lg"
+                      : "bg-gray-400 text-white cursor-not-allowed"
                   }`}
-                  disabled={machine.status !== 'available'}
+                  onClick={() => handleBookMachine(machine)}
+                  disabled={machine.status !== "available" || isMachineBooked(machine.name)}
                 >
-                  {machine.status === 'available' ? '📞 Book Now' : 'Not Available'}
+                  {isMachineBooked(machine.name) 
+                    ? "✓ Already Booked" 
+                    : machine.status === "available"
+                    ? "📞 Book Now"
+                    : "Not Available"}
                 </button>
               </div>
             ))}
